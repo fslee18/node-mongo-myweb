@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 const Profile = new mongoose.Schema({
-    username: {
+    email: {
         type: String
     },
     password: {
@@ -28,7 +28,7 @@ const Profile = new mongoose.Schema({
         default:''
     },
     grade: {
-        type: Number,
+        type: String,
         default:0
     },
     createdOn: {

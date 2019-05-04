@@ -3,24 +3,60 @@ let dbProfile = require('../models/Profile');
 
 var router = express.Router();
 
-router.get('/', function (req, res) {
-    res.render('signup');
+router.get('/', (req, res)  => {
+    res.render('login');
 });
 
-// router.get('/courses', function (req, res) {
-//     var vm = { title: "Rest Demo" };
-//     res.render('courses', vm);
-// });
+router.get('/signup', (req, res) => {
+    res.render('signup');
+})
 
-//API or REST Endpoints are defined below
 
-// router.get('/api/courses', function (req, res) {
-//     Course.find({}, function (err, courses) {
-//         res.json(courses);
-//     });
-// });
+router.get('/profile/:id', (req, res) => {
+    let qid = req.params.id
+    
+    dbProfile.findById(qid)
+    .then(profile =>{
+        res.json({
+            confirmation: 'success',
+            data: profile
+        })
+    })
+    .catch(err => {
+        res.json({
+            confirmation: 'fail',
+            message: err.message
+        })
+    })
+    
+})
 
 router.post('/profile', (req, res) => {
+    let pemail = req.body.email
+    let ppassword = req.body.password
+    dbProfile.find({email: pemail, password: ppassword})
+    .then(profile => {
+        if(profile != ''){
+            res.json({
+                confirmation: 'login success',
+                data: profile
+            })
+        } else {
+            res.json({
+                confirmation: 'login fail',
+                message: "sorry"
+            })
+        }
+    })
+    .catch(err =>{
+        res.json({
+            confirmation: 'Error',
+            message: err.message
+        })
+    }) 
+})
+
+router.post('/confirmation', (req, res) => {
 
     dbProfile.create(req.body)
 
